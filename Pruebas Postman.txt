@@ -1,0 +1,116 @@
+
+**********************************************************
+			MICROBANDAS
+
+**********************************************************
+
+
+**********************************************************
+GET BANDAS EN GENERAL
+http://localhost:8002/bandas
+
+**********************************************************
+GET BUSCAR POR ID BANDAS
+http://localhost:8002/bandas/3
+
+**********************************************************
+POST CREAR BANDAS
+http://localhost:8002/bandas
+
+BODY
+{
+  "nombre": "Banda 24 de mayo"
+}
+
+**********************************************************
+PUT ACTUALIZAR BANDA
+http://localhost:8002/bandas/1
+
+BODY
+{
+  "nombre": "Banda de Metal1"
+}
+
+**********************************************************
+DELETE ELIMINAR BANDA
+http://localhost:8002/bandas/1
+
+**********************************************************
+
+
+**********************************************************
+			MICROMIEMBROS
+
+**********************************************************
+
+
+**********************************************************
+GET LISTAR MIEMBROS
+http://localhost:8001/miembros
+
+**********************************************************
+GET LISTAR MIEMBROS POR ID
+http://localhost:8001/miembros/1
+
+**********************************************************
+POST CREAR MIEMBROS
+http://localhost:8001/miembros
+BODY
+{
+  "nombre": "Juan Pérez",
+  "genero": "Masculino",
+  "rol": "Vocalista"
+}
+
+**********************************************************
+PUT ACTUALIZAR MIEMBRO
+http://localhost:8001/miembros/2
+BODY
+{
+  "nombre": "Francisco Javier Ocaña",
+  "genero": "Masculino",
+  "rol": "Vocalista"
+}
+
+**********************************************************
+DELETE ELIMINAR MIEMBRO
+http://localhost:8001/miembros/2
+
+**********************************************************
+
+
+**********************************************************
+			BANDASMIEMBROS
+**********************************************************
+GET VER QUE INTEGRANTE ESTA INTEGRADO EN LA BANDA
+http://localhost:8002/bandas-miembros/banda/1/miembros
+**********************************************************
+GET VER QUE BANDA ESTA INTEGRADA EL MIEMBRO
+http://localhost:8002/bandas-miembros/miembro/1/bandas
+**********************************************************
+POST AGREGAR MIEMBRO A UNA BANDA
+http://localhost:8002/bandas-miembros/1/miembros/1
+**********************************************************
+DELETE ELIMINAR EL MIEMBRO DE UNA BANDA
+http://localhost:8002/bandas-miembros/1/miembros/1
+**********************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
