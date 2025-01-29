@@ -1,5 +1,6 @@
 package com.espe.micro_bandas.services;
 
+import com.espe.micro_bandas.exception.ResourceNotFoundException;
 import com.espe.micro_bandas.models.entities.Banda;
 import com.espe.micro_bandas.models.entities.BandasMiembros;
 import com.espe.micro_bandas.repositories.BandaRepository;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 public class BandasMiembrosServiceImpl implements BandasMiembrosService {
@@ -22,7 +22,7 @@ public class BandasMiembrosServiceImpl implements BandasMiembrosService {
     @Override
     public BandasMiembros assignMiembroToBanda(Long bandaId, Long miembroId) {
         Banda banda = bandaRepository.findById(bandaId)
-                .orElseThrow(() -> new RuntimeException("Banda no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Banda no encontrada"));
 
         BandasMiembros relacion = new BandasMiembros();
         relacion.setBanda(banda);
@@ -33,20 +33,29 @@ public class BandasMiembrosServiceImpl implements BandasMiembrosService {
 
     @Override
     public List<BandasMiembros> getMiembrosByBanda(Long bandaId) {
+        if (!bandaRepository.existsById(bandaId)) {
+            throw new ResourceNotFoundException("Banda no encontrada");
+        }
         return repository.findByBandaId(bandaId);
     }
 
     @Override
     public List<BandasMiembros> getBandasByMiembro(Long miembroId) {
-        return repository.findByMiembroId(miembroId);
+        List<BandasMiembros> bandas = repository.findByMiembroId(miembroId);
+        if (bandas.isEmpty()) {
+            throw new ResourceNotFoundException("Miembro no encontrado");
+        }
+        return bandas;
     }
 
     @Override
     public void removeMiembroFromBanda(Long bandaId, Long miembroId) {
         List<BandasMiembros> relaciones = repository.findByBandaId(bandaId);
-        relaciones.stream()
-                .filter(relacion -> relacion.getMiembroId().equals(miembroId))
+        BandasMiembros relacion = relaciones.stream()
+                .filter(r -> r.getMiembroId().equals(miembroId))
                 .findFirst()
-                .ifPresent(repository::delete);
+                .orElseThrow(() -> new ResourceNotFoundException("Miembro no encontrado en la banda"));
+
+        repository.delete(relacion);
     }
 }

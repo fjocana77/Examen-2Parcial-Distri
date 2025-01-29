@@ -2,11 +2,10 @@ package com.espe.micro_miembros.services;
 
 import com.espe.micro_miembros.models.entities.Miembros;
 import com.espe.micro_miembros.repositories.MiembroRepository;
+import com.espe.micro_miembros.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-
 
 @Service
 public class MiembroServiceImpl implements MiembroService {
@@ -26,7 +25,8 @@ public class MiembroServiceImpl implements MiembroService {
 
     @Override
     public Miembros findById(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Miembro no encontrado"));
     }
 
     @Override
